@@ -3,6 +3,7 @@
 const $arenas = document.querySelector('.arenas')
 
 const player1 = {
+  player:1,
   name:'Scorpion',
   hp:80,
   img:'http://reactmarathon-api.herokuapp.com/assets/scorpion.gif',
@@ -13,6 +14,7 @@ const player1 = {
 }
 
 const player2 = {
+  player:2,
   name:'Kitana',
   hp:30,
   img:'http://reactmarathon-api.herokuapp.com/assets/kitana.gif',
@@ -29,8 +31,8 @@ const createElement = (tag, className) => {
   return $el
 }
 
-const createPlayer = (playerName, playerObj) => {
-  const $player = createElement('div', playerName)
+const createPlayer = (playerObj) => {
+  const $player = createElement('div', `player${playerObj.player}`)
   const $progressbar = createElement('div', 'progressbar')
   const $life = createElement('div', 'life')
   const $name = createElement('div', 'name')
@@ -49,5 +51,5 @@ const createPlayer = (playerName, playerObj) => {
   return $player
 }
 
-$arenas.append(createPlayer('player1', player1))
-$arenas.append(createPlayer('player2', player2))
+$arenas.append(createPlayer(player1))
+$arenas.append(createPlayer(player2))
