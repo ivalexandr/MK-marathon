@@ -11,7 +11,10 @@ const player1 = {
   weapon:['Гарпун'],
   attack:function(){
     console.log(`${this.name} Fight...`)
-  }
+  },
+  changeHp,
+  elHP,
+  renderHP,
 }
 
 const player2 = {
@@ -22,7 +25,10 @@ const player2 = {
   weapon:['Веера'],
   attack:function(){
     console.log(`${this.name} Fight...`)
-  }
+  },
+  changeHp,
+  elHP,
+  renderHP,
 }
 
 const createElement = (tag, className) => {
@@ -55,21 +61,28 @@ const createPlayer = (playerObj) => {
 $arenas.append(createPlayer(player1))
 $arenas.append(createPlayer(player2))
 
-const randomChanger = () => {
-  return Math.ceil(Math.random() * 20)
+const randomChanger = (num) => {
+  return Math.ceil(Math.random() * num)
 }
 
-const changeHp = (player) => {
-  const $playerLife = document.querySelector(`.player${player.player} .life`)
-  if(player.hp === 0 || player.hp < 0){ 
-    player.hp = 0
+
+function changeHp(hp){
+  if(this.hp === 0 || this.hp < 0){ 
+    this.hp = 0
   }
   else{
-    player.hp -= randomChanger()
+    this.hp -= hp
   } 
-  $playerLife.style.width = `${player.hp}%`
   }
-  
+
+function elHP(){
+  return document.querySelector(`.player${this.player} .life`)
+}
+
+function renderHP(el){
+  el.style.width = `${this.hp}%`
+}
+
 const playerWinCreator = (name) => {
   const $winTitle = createElement('div', 'loseTitle')
   if(name){
@@ -81,9 +94,6 @@ const playerWinCreator = (name) => {
   }
 
 const selectWin = (player1, player2) => {
-  if(player1.hp <= 0 || player2.hp <= 0){
-    $button.disabled = true
-  }
   if(player1.hp > 0 && player2.hp <= 0){
     $arenas.append(playerWinCreator(player1.name))
   } else if(player2.hp > 0 && player1.hp <= 0){
@@ -91,12 +101,32 @@ const selectWin = (player1, player2) => {
   }else if(player1.hp <= 0 && player1.hp <= 0){
     $arenas.append(playerWinCreator())
   }
+  if(player1.hp <= 0 || player2.hp <= 0){
+    $button.disabled = true
+    return true
+  }
 }  
+const createReloadButton = () => {
+  const $reloadWrap = createElement('div', 'reloadWrap')
+  const $button = createElement('button', 'button')
+  $button.textContent = 'Restart'
+  $reloadWrap.append($button)
+  return $reloadWrap
+}
 
 const clickRandomButtonHandler = () => {
-  changeHp(player1)
-  changeHp(player2)
-  selectWin(player1, player2)
+  player1.changeHp(randomChanger(20))
+  player2.changeHp(randomChanger(20))
+  player1.renderHP(player1.elHP())
+  player2.renderHP(player2.elHP())
+  const isOver = selectWin(player1, player2)
+  if(isOver){
+    $arenas.append(createReloadButton())
+    document.querySelector('.reloadWrap .button').addEventListener('click', () => window.location.reload())
+  }
 }
 
 $button.addEventListener('click', clickRandomButtonHandler)
+
+
+
