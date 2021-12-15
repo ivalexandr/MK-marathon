@@ -1,7 +1,15 @@
 'use strict'
 
 const $arenas = document.querySelector('.arenas')
-const $button = document.querySelector('.button')
+const $formFigth = document.querySelector('.control')
+
+const HIT = {
+  head: 30,
+  body: 25,
+  foot: 20,
+}
+
+const ATTACK = ['head', 'body', 'foot']
 
 const player1 = {
   player:1,
@@ -102,7 +110,7 @@ const selectWin = (player1, player2) => {
     $arenas.append(playerWinCreator())
   }
   if(player1.hp <= 0 || player2.hp <= 0){
-    $button.disabled = true
+    $formFigth.remove()
     return true
   }
 }  
@@ -114,19 +122,49 @@ const createReloadButton = () => {
   return $reloadWrap
 }
 
-const clickRandomButtonHandler = () => {
-  player1.changeHp(randomChanger(20))
-  player2.changeHp(randomChanger(20))
-  player1.renderHP()
-  player2.renderHP()
-  const isOver = selectWin(player1, player2)
-  if(isOver){
-    $arenas.append(createReloadButton())
-    document.querySelector('.reloadWrap .button').addEventListener('click', () => window.location.reload())
+const enemyAttack = () => {
+  const hit = ATTACK[randomChanger(3) - 1]
+  const defence = ATTACK[randomChanger(3) - 1]
+  return {
+    value:randomChanger(HIT[hit]),
+    hit,
+    defence
   }
 }
+const playerAttack = (form) => {
+  const attack = {}
+  for(const item of form){
+    if(item.checked === true && item.name === 'hit'){
+      attack.value = randomChanger(HIT[item.value])
+      attack.hit = item.value
+    }
+    if(item.checked === true && item.name === 'defence'){
+      attack.defence = item.value
+    }
+    item.checked = false
+  }
+  return attack
+}
+const submitFormFigthHandler = (e) => {
+  e.preventDefault()
+  const player = playerAttack(e.target)
+  const enemy = enemyAttack()
+  
+  if(player.hit !== enemy.defence){
+    player2.changeHp(player.value)
+    player2.renderHP()
+  }
+  if(enemy.hit !== player.hit){
+    player1.changeHp(enemy.value)
+    player1.renderHP()
+  }
+  const isOver = selectWin(player1, player2)
+  if(isOver){
+        $arenas.append(createReloadButton())
+        document.querySelector('.reloadWrap .button').addEventListener('click', () => window.location.reload())
+      }
+}
 
-$button.addEventListener('click', clickRandomButtonHandler)
-
+$formFigth.addEventListener('submit', submitFormFigthHandler)
 
 
