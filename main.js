@@ -67,7 +67,7 @@ const randomChanger = (num) => {
 
 
 function changeHp(hp){
-  if(this.hp === 0 || this.hp < 0){ 
+  if(this.hp <= 0){ 
     this.hp = 0
   }
   else{
@@ -79,8 +79,8 @@ function elHP(){
   return document.querySelector(`.player${this.player} .life`)
 }
 
-function renderHP(el){
-  el.style.width = `${this.hp}%`
+function renderHP(){
+  this.elHP().style.width = `${this.hp}%`
 }
 
 const playerWinCreator = (name) => {
@@ -117,8 +117,8 @@ const createReloadButton = () => {
 const clickRandomButtonHandler = () => {
   player1.changeHp(randomChanger(20))
   player2.changeHp(randomChanger(20))
-  player1.renderHP(player1.elHP())
-  player2.renderHP(player2.elHP())
+  player1.renderHP()
+  player2.renderHP()
   const isOver = selectWin(player1, player2)
   if(isOver){
     $arenas.append(createReloadButton())
