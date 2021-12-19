@@ -224,7 +224,7 @@ const selectWin = (player1, player2) => {
   }
 }
 
-$chat.insertAdjacentHTML('afterbegin', generateLogs('start', player1, player2))
+renderLogs($chat, generateLogs('start', player1, player2))
 
 const submitFormFigthHandler = (e) => {
   e.preventDefault()
