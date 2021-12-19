@@ -154,7 +154,7 @@ const submitFormFigthHandler = (e) => {
     player2.changeHp(player.value)
     player2.renderHP()
   }
-  if(enemy.hit !== player.hit){
+  if(enemy.hit !== player.defence){
     player1.changeHp(enemy.value)
     player1.renderHP()
   }
