@@ -4,8 +4,8 @@ const createElement = (tag, className) => {
 
   return $el
 }
-const createPlayer = (playerObj) => {
-  const $player = createElement('div', `player${playerObj.player}`)
+const createPlayer = ({player, hp, name, img}) => {
+  const $player = createElement('div', `player${player}`)
   const $progressbar = createElement('div', 'progressbar')
   const $life = createElement('div', 'life')
   const $name = createElement('div', 'name')
@@ -13,12 +13,12 @@ const createPlayer = (playerObj) => {
   const $img = createElement('img')
   $player.append($progressbar)
   $progressbar.append($life)
-  $life.style.width = `${playerObj.hp}%`
+  $life.style.width = `${hp}%`
   $progressbar.append($name)
-  $name.textContent = playerObj.name
+  $name.textContent = name
   $player.append($character)
   $character.append($img)
-  $img.src = playerObj.img
+  $img.src = img
 
   return $player
 }

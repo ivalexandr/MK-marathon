@@ -4,17 +4,20 @@ import { renderLogs, generateLogs } from './logger.js'
 import { $formFigth, $chat } from './DOMelements.js'
 
 const selectWin = (player1, player2) => {
-  if(player1.hp > 0 && player2.hp === 0){
-    $arenas.append(playerWinCreator(player1.name))
+  const {hp:playerHp, name:playerName} = player1
+  const {hp:enemyHp, name:enemyName} = player2
+  
+  if(playerHp > 0 && enemyHp === 0){
+    $arenas.append(playerWinCreator(playerName))
     renderLogs($chat,generateLogs('end', player1, player2))
-  } else if(player2.hp > 0 && player1.hp === 0){
-    $arenas.append(playerWinCreator(player2.name))
+  } else if(playerHp > 0 && enemyHp === 0){
+    $arenas.append(playerWinCreator(enemyName))
     renderLogs($chat,generateLogs('end', player2, player1))
-  }else if(player1.hp === 0 && player1.hp === 0){
+  }else if(playerHp === 0 && enemyHp === 0){
     $arenas.append(playerWinCreator())
     renderLogs($chat, generateLogs('draw'))
   }
-  if(player1.hp === 0 || player2.hp === 0){
+  if(playerHp === 0 || enemyHp === 0){
     $formFigth.remove()
     return true
   }
