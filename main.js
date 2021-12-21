@@ -115,12 +115,10 @@ const randomChanger = (num) => {
 
 
 function changeHp(hp){
-  if(this.hp <= 0){ 
-    this.hp = 0
-  }
-  else{
     this.hp -= hp
-  } 
+    if(this.hp <= 0){ 
+      this.hp = 0
+    }
   }
 
 function elHP(){
@@ -174,7 +172,7 @@ const playerAttack = (form) => {
   return attack
 }
 const getTime = () => {
-  return `${new Date().getHours()}:${new Date().getMinutes()}`
+  return `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`
 }
 const generateStringInLogs = (logs,type,kickPlayer, defPlayer) => {
   return logs[type][randomChanger(logs[type].length) - 1]
@@ -208,17 +206,17 @@ el.insertAdjacentHTML('afterbegin', logText)
 }
 
 const selectWin = (player1, player2) => {
-  if(player1.hp > 0 && player2.hp <= 0){
+  if(player1.hp > 0 && player2.hp === 0){
     $arenas.append(playerWinCreator(player1.name))
     renderLogs($chat,generateLogs('end', player1, player2))
-  } else if(player2.hp > 0 && player1.hp <= 0){
+  } else if(player2.hp > 0 && player1.hp === 0){
     $arenas.append(playerWinCreator(player2.name))
     renderLogs($chat,generateLogs('end', player2, player1))
-  }else if(player1.hp <= 0 && player1.hp <= 0){
+  }else if(player1.hp === 0 && player1.hp === 0){
     $arenas.append(playerWinCreator())
     renderLogs($chat, generateLogs('draw'))
   }
-  if(player1.hp <= 0 || player2.hp <= 0){
+  if(player1.hp === 0 || player2.hp === 0){
     $formFigth.remove()
     return true
   }
