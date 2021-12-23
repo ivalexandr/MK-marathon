@@ -4,9 +4,6 @@ const player1 = {
   hp:100,
   img:'http://reactmarathon-api.herokuapp.com/assets/scorpion.gif',
   weapon:['Гарпун'],
-  attack:function(){
-    console.log(`${this.name} Fight...`)
-  },
   changeHp,
   elHP,
   renderHP,
@@ -17,9 +14,6 @@ const player2 = {
   hp:100,
   img:'http://reactmarathon-api.herokuapp.com/assets/kitana.gif',
   weapon:['Веера'],
-  attack:function(){
-    console.log(`${this.name} Fight...`)
-  },
   changeHp,
   elHP,
   renderHP,

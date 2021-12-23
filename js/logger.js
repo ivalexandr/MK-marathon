@@ -10,7 +10,7 @@ const getTime = () => {
   return `${hours}:${minutes}:${seconds}`
 }
 
-const generateStringInLogs = (LOGS,type,{name:kickName}, {name:defName}) => {
+const generateStringInLogs = (LOGS,type,kickName, defName) => {
   return LOGS[type][randomChanger(LOGS[type].length) - 1]
   .replace('[playerKick]', kickName)
   .replace('[playerDefence]', defName)
@@ -26,9 +26,9 @@ const generateLogs = (type, kickPlayer, defPlayer, changeHp) => {
       .replace('[player2]', defName)
       return `<p>${startText}</p>`
     case 'hit':
-      return `<p>${getTime()} - ${generateStringInLogs(LOGS, type, kickPlayer, defPlayer)} -${changeHp} [${defHp}/100]</p>`
+      return `<p>${getTime()} - ${generateStringInLogs(LOGS, type, kickName, defName)} -${changeHp} [${defHp}/100]</p>`
     case 'defence':
-      return `<p>${getTime()} - ${generateStringInLogs(LOGS, type, kickPlayer, defPlayer)}</p>`
+      return `<p>${getTime()} - ${generateStringInLogs(LOGS, type, kickName, defName)}</p>`
     case 'end':
       const endText = LOGS[type][randomChanger(LOGS[type].length) - 1]
       .replace('[playerWins]', kickName)
