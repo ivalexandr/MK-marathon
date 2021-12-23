@@ -181,7 +181,7 @@ class Game {
     if (playerHp > 0 && enemyHp === 0) {
       this.$arenas.append(this.#playerWinCreator(playerName))
       this.#renderLogs(this.#generateLogs('end', this.player1, this.player2))
-    } else if (playerHp > 0 && enemyHp === 0) {
+    } else if (enemyHp > 0 && playerHp === 0) {
       this.$arenas.append(this.#playerWinCreator(enemyName))
       this.#renderLogs(this.#generateLogs('end', this.player2, this.player1))
     } else if (playerHp === 0 && enemyHp === 0) {
