@@ -15,7 +15,7 @@ class API {
       console.error(e)
     }
   }
-  getRandomPersons = async () => {
+  getRandomPerson = async () => {
     try {
       const res = await fetch(this.randomPlayers)
       if (!res.ok) throw new Error('Ответ не ок!')

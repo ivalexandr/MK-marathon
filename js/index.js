@@ -13,9 +13,7 @@ const createElement = (tag, className) => {
         } else {
             $tag.classList.add(className)
         }
-
     }
-
     return $tag
 }
 
@@ -36,7 +34,6 @@ async function init() {
         players.forEach(item => {
             const el = createElement('div', ['character', `div${item.id}`])
             const img = createElement('img')
-    
             el.addEventListener('mousemove', () => {
                 if (imgSrc === null) {
                     imgSrc = item.img
@@ -44,36 +41,25 @@ async function init() {
                     $img.src = imgSrc
                     $player.appendChild($img)
                 }
-            });
-    
+            })
             el.addEventListener('mouseout', () => {
                 if (imgSrc) {
                     imgSrc = null;
                     $player.innerHTML = ''
                 }
-            });
-    
+            })
             el.addEventListener('click', () => {
-                //TODO: Мы кладем нашего игрока в localStorage что бы потом на арене его достать.
-                // При помощи localStorage.getItem('player1'); т.к. в localStorage кладется строка,
-                // то мы должны ее распарсить обратным методом JSON.parse(localStorage.getItem('player1'));
-                // но это уже будет в нашем классе Game когда мы инициализируем игроков.
                 localStorage.setItem('player1', JSON.stringify(item))
-    
                 el.classList.add('active')
-    
                 setTimeout(() => {
-                    // TODO: Здесь должен быть код который перенаправит вас на ваше игровое поле...
                     window.location.pathname = 'arenas.html'
                 }, 1000);
-            });
-    
+            })
             img.src = item.avatar
             img.alt = item.name
-    
             el.appendChild(img)
             $parent.appendChild(el)
-        });
+        })
     } catch (e) {
         console.error(e)
     }

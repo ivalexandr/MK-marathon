@@ -1,14 +1,15 @@
-import { player1, player2 } from './Player.js'
+import Player from './Player.js'
+import api from './API.js'
 
 class Game {
-  constructor(props) {
-    const { player1, player2 } = props
-    this.player1 = player1
-    this.player2 = player2
-
+  constructor() {
     this.$arenas = document.querySelector('.arenas')
     this.$formFigth = document.querySelector('.control')
     this.$chat = document.querySelector('.chat')
+
+    this.player1
+    this.player2
+    this.attackObj
 
     this.LOGS = {
       start:
@@ -50,12 +51,21 @@ class Game {
       ],
       draw: 'Ничья - это тоже победа!'
     }
-    this.HIT = {
-      head: 30,
-      body: 25,
-      foot: 20
+  }
+  #getPlayer = async () => {
+    try {
+      this.player1 = new Player({player:1,...JSON.parse(localStorage.getItem('player1'))})
+      await api.getRandomPerson().then(data => this.player2 = new Player({player:2, ...data}))
+    } catch (e) {
+      console.error(e)
     }
-    this.ATTACK = ['head', 'body', 'foot']
+  }
+  #getAttackObj = async (defence, hit) => {
+    try {
+      await api.figthPersons(defence, hit).then(data => this.attackObj = data)
+    } catch (e) {
+      console.error(e)
+    }
   }
   #createElement = (tag, className) => {
     const $el = document.createElement(tag)
@@ -102,20 +112,10 @@ class Game {
     this.$arenas.append(this.#createPlayer(this.player2))
   }
   randomChanger = num => Math.ceil(Math.random() * num)
-  #enemyAttack = () => {
-    const hit = this.ATTACK[this.randomChanger(3) - 1]
-    const defence = this.ATTACK[this.randomChanger(3) - 1]
-    return {
-      value: this.randomChanger(this.HIT[hit]),
-      hit,
-      defence
-    }
-  }
-  #playerAttack = form => {
+  #playerAttack = async (form) => {
     const attack = {}
     for (const item of form) {
       if (item.checked === true && item.name === 'hit') {
-        attack.value = this.randomChanger(this.HIT[item.value])
         attack.hit = item.value
       }
       if (item.checked === true && item.name === 'defence') {
@@ -123,7 +123,7 @@ class Game {
       }
       item.checked = false
     }
-    return attack
+    await this.#getAttackObj(attack.defence, attack.hit)
   }
   #getTime = () => {
     const hours = new Date().getHours()
@@ -193,16 +193,12 @@ class Game {
       return true
     }
   }
-  #submitHandler = e => {
+  #submitHandler = async (e) => {
     e.preventDefault()
-
-    const {
-      value: pValue,
-      hit: pHit,
-      defence: pDefence
-    } = this.#playerAttack(e.target)
-    const { value: eValue, hit: eHit, defence: eDefence } = this.#enemyAttack()
-
+    await this.#playerAttack(e.target)
+    const {value: pValue,hit: pHit, defence: pDefence} = this.attackObj['player1']
+    const { value: eValue, hit: eHit, defence: eDefence } = this.attackObj['player2']
+    
     if (pHit !== eDefence) {
       this.player2.changeHp(pValue)
       this.player2.renderHP()
@@ -230,14 +226,15 @@ class Game {
       this.$arenas.append(this.#createReloadButton())
       document
         .querySelector('.reloadWrap .button')
-        .addEventListener('click', () => window.location.reload())
+        .addEventListener('click', () => window.location.pathname = 'index.html')
     }
   }
-  start = () => {
+  start = async () => {
+    await this.#getPlayer()
     this.#addPlayers()
     this.#renderLogs(this.#generateLogs('start', this.player1, this.player2))
     this.$formFigth.addEventListener('submit', this.#submitHandler)
   }
 }
 
-export default new Game({player1, player2})
+export default new Game()

@@ -1,7 +1,6 @@
 'use strict'
 
-import game from './js/Game.js'
-import api from './modules/API.js'
+import game from './modules/Game.js'
 
 game.start()
 
