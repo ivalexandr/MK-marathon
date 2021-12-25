@@ -139,7 +139,7 @@ class Game {
       .replace('[playerKick]', kickName)
       .replace('[playerDefence]', defName)
   }
-  #generateLogs = (type, kickPlayer, defPlayer, changeHp) => {
+  #generateLogs = (type, kickPlayer = {}, defPlayer = {}, changeHp) => {
     const { name: kickName } = kickPlayer
     const { name: defName, hp: defHp } = defPlayer
     switch (type) {
